@@ -78,7 +78,7 @@ glob('./data/**/*', async (err, matches) => {
                 if (!resPoly) {
                     resPoly = maxPolygon;
                 } else {
-                    resPoly = turf.union(maxPolygon, resPoly);
+                    resPoly = turf.union(resPolygon, resPoly);
                 }
 
                 fs.writeFile(newPath, JSON.stringify(resPoly), (err) => {

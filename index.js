@@ -45,6 +45,7 @@ glob('./data/**/*', async (err, matches) => {
                 }
 
                 let maxPolygon = turf.polygon([maxPoly]);
+                let resPolygon = turf.polygon([maxPoly]);;
 
                 let resPoly = null;
 
@@ -55,12 +56,16 @@ glob('./data/**/*', async (err, matches) => {
 
                     const pol = turf.polygon(poly);
 
-                    if (turf.booleanEqual(maxPolygon, pol)) {
+                    if (!pol || turf.booleanEqual(maxPolygon, pol)) {
                         continue;
                     }
 
                     if (turf.booleanContains(maxPolygon, pol)) {
-                        //maxPolygon = turf.difference(maxPolygon, pol);
+                        let res = turf.difference(resPolygon, pol);
+
+                        if (res != null) {
+                            resPolygon = res;
+                        }
                     } else {
                         if (!resPoly) {
                             resPoly = pol;

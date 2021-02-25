@@ -28,18 +28,15 @@ glob('./data/**/*', async (err, matches) => {
                 const geojson = JSON.parse(data);
 
                 const geojsonAdjusted = {
-                    'type': 'FeatureCollection',
-                    'geometry': geojson.geometries[0].coordinates.map((coords) => {
-                        return {
-                            'type': 'Polygon',
-                            'coordinates': coords
-                        };
-                    })
+                    'type': 'Feature',
+                    'geometry': geojson.geometries[0]
                 };
 
                 console.log(geojsonAdjusted);
 
                 const simplified = simplify(geojsonAdjusted, tolerance);
+
+                console.log(simplified);
 
                 const newPath = file.replace('data', 'extracts');
 

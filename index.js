@@ -55,7 +55,11 @@ glob('./data/**/*', async (err, matches) => {
 
                     const pol = turf.polygon(poly);
 
-                    if (!turf.booleanEqual(maxPolygon, pol) && turf.booleanContains(maxPolygon, pol)) {
+                    if (turf.booleanEqual(maxPolygon, pol)) {
+                        continue;
+                    }
+
+                    if (turf.booleanContains(maxPolygon, pol)) {
                         maxPolygon = turf.difference(maxPolygon, pol);
                     } else {
                         if (!resPoly) {

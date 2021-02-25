@@ -62,7 +62,7 @@ glob('./data/**/*', async (err, matches) => {
 
                     if (turf.booleanContains(maxPolygon, pol)) {
                         let res = turf.difference(resPolygon, pol);
-
+                        console.log('Contains');
                         if (res != null) {
                             resPolygon = res;
                         }
@@ -70,7 +70,7 @@ glob('./data/**/*', async (err, matches) => {
                         if (!resPoly) {
                             resPoly = pol;
                         } else {
-                            turf.union(resPoly, pol);   
+                            resPoly = turf.union(resPoly, pol);   
                         }
                     }
                 }

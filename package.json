@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@turf/boolean-contains": "^6.3.0",
+    "@turf/helpers": "^6.3.0",
+    "@turf/turf": "^6.3.0",
     "glob": "^7.1.6",
     "simplify-geojson": "^1.0.4"
   },

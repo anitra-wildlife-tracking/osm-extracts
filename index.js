@@ -38,9 +38,9 @@ glob('./data/**/*', async (err, matches) => {
 
                 let maxPoly = [];
 
-                for (let poly of simplified.geometry.coordinates[0]) {
-                    if (poly.length > maxPoly.length) {
-                        maxPoly = poly;
+                for (let poly of simplified.geometry.coordinates) {
+                    if (poly[0].length > maxPoly.length) {
+                        maxPoly = poly[0];
                     }
                 }
 
@@ -60,7 +60,7 @@ glob('./data/**/*', async (err, matches) => {
                     }
 
                     if (turf.booleanContains(maxPolygon, pol)) {
-                        maxPolygon = turf.difference(maxPolygon, pol);
+                        //maxPolygon = turf.difference(maxPolygon, pol);
                     } else {
                         if (!resPoly) {
                             resPoly = pol;

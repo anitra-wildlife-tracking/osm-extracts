@@ -1,0 +1,24 @@
+{
+  "name": "osm-geojsons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "glob": "^7.1.6",
+    "simplify-geojson": "^1.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anitra-wildlife-tracking/osm-extracts.git"
+  },
+  "author": "Karel Douda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anitra-wildlife-tracking/osm-extracts/issues"
+  },
+  "homepage": "https://github.com/anitra-wildlife-tracking/osm-extracts#readme"
+}

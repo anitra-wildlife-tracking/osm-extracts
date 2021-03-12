@@ -3,6 +3,7 @@ const WBK = require('wikibase-sdk');
 var fs = require('fs');
 var dir = './tmp';
 const osmGeoJson = require('osm-geojson');
+const { exit } = require('process');
 
 const wdk = WBK({
   instance: 'https://www.wikidata.org',
@@ -22,13 +23,10 @@ WHERE
 `;
 
 const url = wdk.sparqlQuery(sparql);
-console.log(url);
 
 var options = {
     headers: {'user-agent': 'node.js'}
 };
-
-
 
 request( url, options , async (err, response, body) => {
     const res = JSON.parse(body);
@@ -37,6 +35,7 @@ request( url, options , async (err, response, body) => {
 
     res.results.bindings.forEach((x) => {
         countries.push({
+            wikidata: x.item.value.replace('http://www.wikidata.org/entity/', ''),
             code: x.code.value,
             relation: x.countryRelation.value,
             name: x.itemLabel.value
@@ -58,5 +57,55 @@ request( url, options , async (err, response, body) => {
         };
 
         fs.writeFileSync(fileName, JSON.stringify(json));
+
+        await new Promise((resolve, reject) => {
+            const sparql = `
+            SELECT ?admin ?adminLabel ?adminIso ?relation
+            WHERE 
+            {
+              wd:${country.wikidata} wdt:P150 ?admin .
+              ?admin wdt:P402 ?relation .
+              ?admin wdt:P300 ?adminIso .
+              
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+            }
+            `;
+
+            const url = wdk.sparqlQuery(sparql);
+
+            var options = {
+                headers: {'user-agent': 'node.js'}
+            };
+
+            request( url, options , async (err, response, body) => {
+                const res = JSON.parse(body);
+                const admins = [];
+
+                res.results.bindings.forEach((x) => {
+                    if (x.relation.value) {
+                        admins.push({
+                            wikidata: x.admin.value.replace('http://www.wikidata.org/entity/', ''),
+                            code: x.adminIso.value,
+                            relation: x.relation.value,
+                            name: x.adminLabel.value
+                        });
+                    }
+                });
+
+                for await (let admin of admins) {
+                    const fileName = './data/' + country.code + '/' + admin.code + '.geojson';
+
+                    const json = await osmGeoJson.get(country.relation);
+
+                    json.properties = {
+                        "name": admin.name
+                    };
+            
+                    fs.writeFileSync(fileName, JSON.stringify(json));
+                }
+                
+                resolve();
+            });
+        });
     }
 });

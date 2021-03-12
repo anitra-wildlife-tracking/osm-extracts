@@ -8,7 +8,10 @@
     "@turf/helpers": "^6.3.0",
     "@turf/turf": "^6.3.0",
     "glob": "^7.1.6",
-    "simplify-geojson": "^1.0.4"
+    "osm-geojson": "^0.8.4",
+    "request": "^2.88.2",
+    "simplify-geojson": "^1.0.4",
+    "wikibase-sdk": "^7.9.1"
   },
   "devDependencies": {},
   "scripts": {

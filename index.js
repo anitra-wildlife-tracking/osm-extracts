@@ -72,6 +72,7 @@ glob('./data/**/*', async (err, matches) => {
                         console.log('Contains');
                         if (res != null) {
                             resPolygon = res;
+                            resPoly = res;
                         }
                     } else {
                         if (!resPoly) {

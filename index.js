@@ -3,6 +3,7 @@ const fs = require("fs");
 const simplify = require('simplify-geojson');
 const tolerance = 0.001;
 const turf = require('@turf/turf');
+const path = require('path');
 
 glob('./data/**/*', async (err, matches) => {
     if (err) {
@@ -35,6 +36,12 @@ glob('./data/**/*', async (err, matches) => {
 
                 const simplified = simplify(geojsonAdjusted, tolerance);
                 const newPath = file.replace('data', 'extracts');
+
+                const dir = path.dirname(newPath);
+                
+                if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir);
+                }
 
                 let maxPoly = [];
 

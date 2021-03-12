@@ -95,13 +95,31 @@ request( url, options , async (err, response, body) => {
                 for await (let admin of admins) {
                     const fileName = './data/' + country.code + '/' + admin.code + '.geojson';
 
-                    const json = await osmGeoJson.get(country.relation);
+                    if (fs.existsSync(fileName)) {
+                        continue;
+                    }
 
-                    json.properties = {
-                        "name": admin.name
-                    };
-            
-                    fs.writeFileSync(fileName, JSON.stringify(json));
+                    console.log('Getting ' + country.code + '/' + admin.code);
+                    try {
+
+                        console.log(admin.wikidata);
+
+                        await new Promise((resolve, reject) => {
+                            request('http://polygons.openstreetmap.fr/?id=' + admin.relation, {}, (e, r, b) => {
+                                resolve();
+                            });
+                        });
+
+                        const json = await osmGeoJson.get(admin.relation);
+
+                        json.properties = {
+                            "name": admin.name
+                        };
+                
+                        fs.writeFileSync(fileName, JSON.stringify(json));
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
                 
                 resolve();

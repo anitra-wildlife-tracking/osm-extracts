@@ -29,6 +29,11 @@ glob('./data/**/*', async (err, matches) => {
 
                 const geojson = JSON.parse(data);
 
+                const name = geojson.properties.name;
+                console.log(name);
+
+                const properties = geojson.properties;
+
                 const geojsonAdjusted = {
                     'type': 'Feature',
                     'geometry': geojson.geometries[0]
@@ -88,6 +93,8 @@ glob('./data/**/*', async (err, matches) => {
                 } else {
                     resPoly = turf.union(resPolygon, resPoly);
                 }
+
+                resPoly.properties = properties;
 
                 fs.writeFile(newPath, JSON.stringify(resPoly), (err) => {
                     if (err) {

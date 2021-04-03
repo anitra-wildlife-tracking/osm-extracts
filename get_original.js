@@ -53,7 +53,9 @@ request( url, options , async (err, response, body) => {
         const json = await osmGeoJson.get(country.relation);
 
         json.properties = {
-            "name": country.name
+            "name": country.name,
+            "wikidata": country.wikidata,
+            "osm": country.osm
         };
 
         fs.writeFileSync(fileName, JSON.stringify(json));
@@ -113,7 +115,9 @@ request( url, options , async (err, response, body) => {
                         const json = await osmGeoJson.get(admin.relation);
 
                         json.properties = {
-                            "name": admin.name
+                            "name": admin.name,
+                            "wikidata": admin.wikidata,
+                            "osm": admin.osm
                         };
                 
                         fs.writeFileSync(fileName, JSON.stringify(json));
